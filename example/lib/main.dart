@@ -1,9 +1,10 @@
-import 'package:examples/samples/avatar.dart';
-import 'package:examples/samples/basic.dart';
-import 'package:examples/samples/media.dart';
-import 'package:examples/samples/quick_replies_sample.dart';
-import 'package:examples/samples/typing_users_sample.dart';
 import 'package:flutter/material.dart';
+
+import 'samples/avatar.dart';
+import 'samples/basic.dart';
+import 'samples/media.dart';
+import 'samples/quick_replies_sample.dart';
+import 'samples/typing_users_sample.dart';
 
 void main() {
   runApp(MyApp());

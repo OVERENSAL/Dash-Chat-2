@@ -12,6 +12,7 @@ class ChatMessage {
     this.mentions,
     this.status = MessageStatus.none,
     this.replyTo,
+    this.messageType = MessageType.common,
   });
 
   /// Create a ChatMessage instance from json data
@@ -42,6 +43,8 @@ class ChatMessage {
           : null,
     );
   }
+
+  MessageType messageType;
 
   /// Text of the message (optional because you can also just send a media)
   String text;
@@ -116,4 +119,10 @@ class MessageStatus {
   static const read = MessageStatus._internal('read');
   static const received = MessageStatus._internal('received');
   static const pending = MessageStatus._internal('pending');
+}
+
+enum MessageType {
+  system,
+  info,
+  common,
 }

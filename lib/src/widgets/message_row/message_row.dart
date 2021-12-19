@@ -55,92 +55,112 @@ class MessageRow extends StatelessWidget {
     }
     return Padding(
       padding: EdgeInsets.only(top: isPreviousSameAuthor ? 2 : 15),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment:
-            isOwnMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
-        children: <Widget>[
-          if (messageOptions.showOtherUsersAvatar)
-            Opacity(
-              opacity: !isOwnMessage && !isNextSameAuthor ? 1 : 0,
-              child: getAvatar(),
-            ),
-          if (!messageOptions.showOtherUsersAvatar)
-            const Padding(padding: EdgeInsets.only(left: 10)),
-          GestureDetector(
-            onLongPress: messageOptions.onLongPressMessage != null
-                ? () => messageOptions.onLongPressMessage!(message)
-                : null,
-            onTap: messageOptions.onPressMessage != null
-                ? () => messageOptions.onPressMessage!(message)
-                : null,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
-              ),
-              child: Column(
-                crossAxisAlignment: isOwnMessage
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  if (messageOptions.top != null)
-                    messageOptions.top!(message, previousMessage, nextMessage),
-                  if (!isOwnMessage &&
-                      messageOptions.showOtherUsersName &&
-                      !isPreviousSameAuthor)
-                    messageOptions.userNameBuilder != null
-                        ? messageOptions.userNameBuilder!(message.user)
-                        : DefaultUserName(user: message.user),
-                  if (message.medias != null &&
-                      message.medias!.isNotEmpty &&
-                      messageOptions.textBeforeMedia)
-                    messageOptions.messageMediaBuilder != null
-                        ? messageOptions.messageMediaBuilder!(
-                            message, previousMessage, nextMessage)
-                        : MediaContainer(
-                            message: message,
-                            isOwnMessage: isOwnMessage,
-                            messageOptions: messageOptions,
-                          ),
-                  if (message.text.isNotEmpty)
-                    TextContainer(
-                      messageOptions: messageOptions,
-                      message: message,
-                      previousMessage: previousMessage,
-                      nextMessage: nextMessage,
-                      isOwnMessage: isOwnMessage,
-                      isNextSameAuthor: isNextSameAuthor,
-                      isPreviousSameAuthor: isPreviousSameAuthor,
-                      messageTextBuilder: messageOptions.messageTextBuilder,
+      child: (message.messageType == MessageType.common)
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: isOwnMessage
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.start,
+              children: <Widget>[
+                if (messageOptions.showOtherUsersAvatar)
+                  Opacity(
+                    opacity: !isOwnMessage && !isNextSameAuthor ? 1 : 0,
+                    child: getAvatar(),
+                  ),
+                if (!messageOptions.showOtherUsersAvatar)
+                  const Padding(padding: EdgeInsets.only(left: 10)),
+                GestureDetector(
+                  onLongPress: messageOptions.onLongPressMessage != null
+                      ? () => messageOptions.onLongPressMessage!(message)
+                      : null,
+                  onTap: messageOptions.onPressMessage != null
+                      ? () => messageOptions.onPressMessage!(message)
+                      : null,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.7,
                     ),
-                  if (message.medias != null &&
-                      message.medias!.isNotEmpty &&
-                      !messageOptions.textBeforeMedia)
-                    messageOptions.messageMediaBuilder != null
-                        ? messageOptions.messageMediaBuilder!(
-                            message, previousMessage, nextMessage)
-                        : MediaContainer(
-                            message: message,
-                            isOwnMessage: isOwnMessage,
+                    child: Column(
+                      crossAxisAlignment: isOwnMessage
+                          ? CrossAxisAlignment.end
+                          : CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        if (messageOptions.top != null)
+                          messageOptions.top!(
+                              message, previousMessage, nextMessage),
+                        if (!isOwnMessage &&
+                            messageOptions.showOtherUsersName &&
+                            !isPreviousSameAuthor)
+                          messageOptions.userNameBuilder != null
+                              ? messageOptions.userNameBuilder!(message.user)
+                              : DefaultUserName(user: message.user),
+                        if (message.medias != null &&
+                            message.medias!.isNotEmpty &&
+                            messageOptions.textBeforeMedia)
+                          messageOptions.messageMediaBuilder != null
+                              ? messageOptions.messageMediaBuilder!(
+                                  message, previousMessage, nextMessage)
+                              : MediaContainer(
+                                  message: message,
+                                  isOwnMessage: isOwnMessage,
+                                  messageOptions: messageOptions,
+                                ),
+                        if (message.text.isNotEmpty)
+                          TextContainer(
                             messageOptions: messageOptions,
+                            message: message,
+                            previousMessage: previousMessage,
+                            nextMessage: nextMessage,
+                            isOwnMessage: isOwnMessage,
+                            isNextSameAuthor: isNextSameAuthor,
+                            isPreviousSameAuthor: isPreviousSameAuthor,
+                            messageTextBuilder:
+                                messageOptions.messageTextBuilder,
                           ),
-                  if (messageOptions.bottom != null)
-                    messageOptions.bottom!(
-                        message, previousMessage, nextMessage),
-                ],
+                        if (message.medias != null &&
+                            message.medias!.isNotEmpty &&
+                            !messageOptions.textBeforeMedia)
+                          messageOptions.messageMediaBuilder != null
+                              ? messageOptions.messageMediaBuilder!(
+                                  message, previousMessage, nextMessage)
+                              : MediaContainer(
+                                  message: message,
+                                  isOwnMessage: isOwnMessage,
+                                  messageOptions: messageOptions,
+                                ),
+                        if (messageOptions.bottom != null)
+                          messageOptions.bottom!(
+                              message, previousMessage, nextMessage),
+                      ],
+                    ),
+                  ),
+                ),
+                if (messageOptions.showCurrentUserAvatar)
+                  Opacity(
+                    opacity: isOwnMessage && !isNextSameAuthor ? 1 : 0,
+                    child: getAvatar(),
+                  ),
+                if (!messageOptions.showCurrentUserAvatar)
+                  const Padding(padding: EdgeInsets.only(left: 10))
+              ],
+            )
+          : Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              alignment: AlignmentDirectional.center,
+              margin: EdgeInsets.only(
+                  top: 10,
+                  bottom: (message.messageType == MessageType.system) ? 0 : 20),
+              child: Text(
+                message.text,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize:
+                        (message.messageType == MessageType.system) ? 16 : 10,
+                    color: Colors.grey,
+                    height: 1.4),
               ),
             ),
-          ),
-          if (messageOptions.showCurrentUserAvatar)
-            Opacity(
-              opacity: isOwnMessage && !isNextSameAuthor ? 1 : 0,
-              child: getAvatar(),
-            ),
-          if (!messageOptions.showCurrentUserAvatar)
-            const Padding(padding: EdgeInsets.only(left: 10))
-        ],
-      ),
     );
   }
 }

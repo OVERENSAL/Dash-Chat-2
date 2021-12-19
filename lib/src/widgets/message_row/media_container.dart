@@ -42,7 +42,7 @@ class MediaContainer extends StatelessWidget {
             Image(
               height: height,
               width: width,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               alignment: isOwnMessage ? Alignment.topRight : Alignment.topLeft,
               image: _getImage(media.url),
             ),
@@ -109,7 +109,7 @@ class MediaContainer extends StatelessWidget {
         children: media.map(
           (ChatMedia m) {
             final double gallerySize =
-                (MediaQuery.of(context).size.width * 0.7) / 2 - 5;
+                (MediaQuery.of(context).size.width);
             final bool isImage = m.type == MediaType.image;
             return Container(
               color: Colors.transparent,

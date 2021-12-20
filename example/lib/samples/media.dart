@@ -19,6 +19,7 @@ class _MediaState extends State<Media> {
         title: const Text('Media example'),
       ),
       body: DashChat(
+        onRefresh: (context) => refresh(context),
         currentUser: user,
         onSend: (ChatMessage m) {
           setState(() {
@@ -58,5 +59,9 @@ class _MediaState extends State<Media> {
         ),
       ),
     );
+  }
+
+  void refresh(BuildContext context) {
+    debugPrint('d');
   }
 }

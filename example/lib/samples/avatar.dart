@@ -18,6 +18,8 @@ class _AvatarSampleState extends State<AvatarSample> {
         title: const Text('Users example'),
       ),
       body: DashChat(
+        onRefresh: (context) => {},
+
         currentUser: user,
         onSend: (ChatMessage m) {
           setState(() {

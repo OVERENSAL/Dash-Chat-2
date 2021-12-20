@@ -5,6 +5,7 @@ class MessageList extends StatefulWidget {
   const MessageList({
     required this.currentUser,
     required this.messages,
+    required this.onRefresh,
     this.messageOptions = const MessageOptions(),
     this.messageListOptions = const MessageListOptions(),
     this.quickReplyOptions = const QuickReplyOptions(),
@@ -12,6 +13,8 @@ class MessageList extends StatefulWidget {
     this.typingUsers,
     Key? key,
   }) : super(key: key);
+
+  final Function onRefresh;
 
   /// The current user of the chat
   final ChatUser currentUser;
@@ -42,6 +45,7 @@ class _MessageListState extends State<MessageList> {
   bool scrollToBottomIsVisible = false;
   bool topReached = false;
   late ScrollController scrollController;
+  RefreshController refreshController = RefreshController();
 
   @override
   void initState() {
@@ -57,81 +61,90 @@ class _MessageListState extends State<MessageList> {
       child: Stack(
         children: <Widget>[
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: NotificationListener<ScrollNotification>(
-                  onNotification: _onScroll,
-                  child: ListView.builder(
-                    controller: scrollController,
-                    reverse: true,
-                    itemCount: widget.messages.length,
-                    itemBuilder: (BuildContext context, int i) {
-                      final ChatMessage? previousMessage =
-                          i < widget.messages.length - 1
-                              ? widget.messages[i + 1]
-                              : null;
-                      final ChatMessage? nextMessage =
-                          i > 0 ? widget.messages[i - 1] : null;
-                      final ChatMessage message = widget.messages[i];
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: _onScroll,
+                    child: SmartRefresher(
+                      onRefresh: () => {
+                        widget.onRefresh(context),
+                        Future.delayed(const Duration(seconds: 1), () {
+                          refreshController.refreshCompleted();
+                        }),
+                      },
+                      controller: refreshController,
+                      child: ListView.builder(
+                      controller: scrollController,
+                      reverse: true,
+                      itemCount: widget.messages.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        final ChatMessage? previousMessage =
+                        i < widget.messages.length - 1
+                            ? widget.messages[i + 1]
+                            : null;
+                        final ChatMessage? nextMessage =
+                        i > 0 ? widget.messages[i - 1] : null;
+                        final ChatMessage message = widget.messages[i];
 
-                      return Column(
-                        children: <Widget>[
-                          if (_shouldShowDateSeparator(
-                              previousMessage, message))
-                            widget.messageListOptions.dateSeparatorBuilder !=
-                                    null
-                                ? widget.messageListOptions
-                                    .dateSeparatorBuilder!(message.createdAt)
-                                : DefaultDateSeparator(
-                                    date: message.createdAt,
-                                    messageListOptions:
-                                        widget.messageListOptions,
-                                  ),
-                          if (widget.messageOptions.messageRowBuilder !=
-                              null) ...<Widget>[
-                            widget.messageOptions.messageRowBuilder!(
-                              message,
-                              previousMessage,
-                              nextMessage,
-                            ),
-                          ] else
-                            MessageRow(
-                              message: widget.messages[i],
-                              nextMessage: nextMessage,
-                              previousMessage: previousMessage,
-                              currentUser: widget.currentUser,
-                              messageOptions: widget.messageOptions,
-                            ),
-                        ],
-                      );
-                    },
+                        return Column(
+                          children: <Widget>[
+                            if (_shouldShowDateSeparator(
+                                previousMessage, message))
+                              widget.messageListOptions.dateSeparatorBuilder !=
+                                  null
+                                  ? widget.messageListOptions
+                                  .dateSeparatorBuilder!(message.createdAt)
+                                  : DefaultDateSeparator(
+                                date: message.createdAt,
+                                messageListOptions:
+                                widget.messageListOptions,
+                              ),
+                            if (widget.messageOptions.messageRowBuilder !=
+                                null) ...<Widget>[
+                              widget.messageOptions.messageRowBuilder!(
+                                message,
+                                previousMessage,
+                                nextMessage,
+                              ),
+                            ] else
+                              MessageRow(
+                                message: widget.messages[i],
+                                nextMessage: nextMessage,
+                                previousMessage: previousMessage,
+                                currentUser: widget.currentUser,
+                                messageOptions: widget.messageOptions,
+                              ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              if (widget.typingUsers != null && widget.typingUsers!.isNotEmpty)
-                ...widget.typingUsers!.map((ChatUser user) {
-                  if (widget.messageListOptions.typingBuilder != null) {
-                    return widget.messageListOptions.typingBuilder!(user);
-                  }
-                  return DefaultTypingBuilder(user: user);
-                }).toList(),
-              if (widget.messageListOptions.showFooterBeforeQuickReplies &&
-                  widget.messageListOptions.chatFooterBuilder != null)
-                widget.messageListOptions.chatFooterBuilder!,
-              if (widget.messages.isNotEmpty &&
-                  widget.messages.first.quickReplies != null &&
-                  widget.messages.first.quickReplies!.isNotEmpty &&
-                  widget.messages.first.user.id != widget.currentUser.id)
-                QuickReplies(
-                  quickReplies: widget.messages.first.quickReplies!,
-                  quickReplyOptions: widget.quickReplyOptions,
                 ),
-              if (!widget.messageListOptions.showFooterBeforeQuickReplies &&
-                  widget.messageListOptions.chatFooterBuilder != null)
-                widget.messageListOptions.chatFooterBuilder!,
-            ],
-          ),
+                if (widget.typingUsers != null && widget.typingUsers!.isNotEmpty)
+                  ...widget.typingUsers!.map((ChatUser user) {
+                    if (widget.messageListOptions.typingBuilder != null) {
+                      return widget.messageListOptions.typingBuilder!(user);
+                    }
+                    return DefaultTypingBuilder(user: user);
+                  }).toList(),
+                if (widget.messageListOptions.showFooterBeforeQuickReplies &&
+                    widget.messageListOptions.chatFooterBuilder != null)
+                  widget.messageListOptions.chatFooterBuilder!,
+                if (widget.messages.isNotEmpty &&
+                    widget.messages.first.quickReplies != null &&
+                    widget.messages.first.quickReplies!.isNotEmpty &&
+                    widget.messages.first.user.id != widget.currentUser.id)
+                  QuickReplies(
+                    quickReplies: widget.messages.first.quickReplies!,
+                    quickReplyOptions: widget.quickReplyOptions,
+                  ),
+                if (!widget.messageListOptions.showFooterBeforeQuickReplies &&
+                    widget.messageListOptions.chatFooterBuilder != null)
+                  widget.messageListOptions.chatFooterBuilder!,
+              ],
+            ),
           if (topReached &&
               widget.messageListOptions.loadEarlierBuilder != null)
             Positioned(

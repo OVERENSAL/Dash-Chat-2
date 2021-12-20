@@ -18,6 +18,8 @@ class _TypingUsersSampleState extends State<TypingUsersSample> {
         title: const Text('Typing user example'),
       ),
       body: DashChat(
+        onRefresh: (context) => {},
+
         currentUser: user,
         onSend: (ChatMessage m) {
           setState(() {

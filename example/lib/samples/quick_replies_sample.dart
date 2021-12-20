@@ -18,6 +18,8 @@ class _QuickRepliesSampleState extends State<QuickRepliesSample> {
         title: const Text('QuickReplies example'),
       ),
       body: DashChat(
+        onRefresh: (context) => {},
+
         currentUser: user,
         onSend: (ChatMessage m) {
           setState(() {

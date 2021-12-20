@@ -18,6 +18,8 @@ class _BasicState extends State<Basic> {
         title: const Text('Basic example'),
       ),
       body: DashChat(
+        onRefresh: (context) => {},
+
         currentUser: user,
         onSend: (ChatMessage m) {
           setState(() {

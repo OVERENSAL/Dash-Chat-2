@@ -6,6 +6,7 @@ class DashChat extends StatelessWidget {
     required this.currentUser,
     required this.onSend,
     required this.messages,
+    this.canSend = false,
     this.inputOptions = const InputOptions(),
     this.messageOptions = const MessageOptions(),
     this.messageListOptions = const MessageListOptions(),
@@ -15,6 +16,8 @@ class DashChat extends StatelessWidget {
     this.typingUsers,
     Key? key,
   }) : super(key: key);
+
+  final bool canSend;
 
   /// The current user of the chat
   final ChatUser currentUser;

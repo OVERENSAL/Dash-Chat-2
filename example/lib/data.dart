@@ -83,38 +83,42 @@ List<ChatMessage> basicSample = <ChatMessage>[
   ),
 ];
 
+List<ChatMessage> headerMessage = <ChatMessage>[
+  ChatMessage(
+    text: 'We recommend that you refrain from remote examination of the Client during the consultation on the Platform, establish diagnoses and prescribe treatment without physical examination or telemedicine services and tools.',
+    user: user3,
+    createdAt: DateTime(2021, 01, 30, 16, 34),
+    messageType: MessageType.info,
+  ),
+  ChatMessage(
+    text: 'As part of a paid request, the client can send you only one text message and attach up to two files. You can reply with an unlimited number of messages, attach images and files.',
+    user: user3,
+    createdAt: DateTime(2021, 01, 30, 16, 34),
+    messageType: MessageType.system,
+  ),
+];
+
 List<ChatMessage> media = <ChatMessage>[
   ChatMessage(
     medias: <ChatMedia>[
       ChatMedia(
-        url:
-            'https://firebasestorage.googleapis.com/v0/b/molteo-40978.appspot.com/o/memes%2F155512641_3864499247004975_4028017188079714246_n.jpg?alt=media&token=0b335455-93ed-4529-9055-9a2c741e0189',
+        url: 'https://hsto.org/webt/5d/ad/ef/5dadef7d0eeaf290713181.jpeg',
         type: MediaType.image,
         fileName: 'image.png',
         isUploading: true,
       ),
       ChatMedia(
-        url:
-            'https://firebasestorage.googleapis.com/v0/b/molteo-40978.appspot.com/o/memes%2F155512641_3864499247004975_4028017188079714246_n.jpg?alt=media&token=0b335455-93ed-4529-9055-9a2c741e0189',
+        url: 'https://hsto.org/webt/5d/ad/ef/5dadef7d0eeaf290713181.jpeg',
         type: MediaType.image,
         fileName: 'image.png',
       ),
       ChatMedia(
-        url:
-            'https://firebasestorage.googleapis.com/v0/b/molteo-40978.appspot.com/o/chat_medias%2F2GFlPkj94hKCqonpEdf1%2F20210526_162318.mp4?alt=media&token=01b814b9-d93a-4bf1-8be1-cf9a49058f97',
-        type: MediaType.video,
-        fileName: 'video.mp4',
-        isUploading: false,
-      ),
-      ChatMedia(
-        url:
-            'https://firebasestorage.googleapis.com/v0/b/molteo-40978.appspot.com/o/memes%2F155512641_3864499247004975_4028017188079714246_n.jpg?alt=media&token=0b335455-93ed-4529-9055-9a2c741e0189',
+        url: 'https://hsto.org/webt/5d/ad/ef/5dadef7d0eeaf290713181.jpeg',
         type: MediaType.file,
         fileName: 'image.png',
       ),
       ChatMedia(
-        url:
-            'https://firebasestorage.googleapis.com/v0/b/molteo-40978.appspot.com/o/memes%2F155512641_3864499247004975_4028017188079714246_n.jpg?alt=media&token=0b335455-93ed-4529-9055-9a2c741e0189',
+        url: 'https://hsto.org/webt/5d/ad/ef/5dadef7d0eeaf290713181.jpeg',
         type: MediaType.image,
         fileName: 'image.png',
       )

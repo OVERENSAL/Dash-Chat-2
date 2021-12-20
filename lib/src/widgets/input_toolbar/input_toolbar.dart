@@ -7,9 +7,12 @@ class InputToolbar extends StatefulWidget {
   const InputToolbar({
     required this.currentUser,
     required this.onSend,
+    this.canSend = false,
     this.inputOptions = const InputOptions(),
     Key? key,
   }) : super(key: key);
+
+  final bool canSend;
 
   /// Options to custom the toolbar
   final InputOptions inputOptions;
@@ -99,7 +102,7 @@ class _InputToolbarState extends State<InputToolbar> {
   }
 
   void _sendMessage() {
-    if (textController.text.isNotEmpty) {
+    if (textController.text.isNotEmpty && !widget.canSend) {
       final ChatMessage message = ChatMessage(
         text: textController.text,
         user: widget.currentUser,

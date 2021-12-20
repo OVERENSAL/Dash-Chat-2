@@ -5,6 +5,7 @@ import 'samples/basic.dart';
 import 'samples/media.dart';
 import 'samples/quick_replies_sample.dart';
 import 'samples/typing_users_sample.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,6 +17,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Dash Chat Demo',
+      supportedLocales: [Locale('ru')],
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+      ],
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),

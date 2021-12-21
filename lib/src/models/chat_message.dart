@@ -46,7 +46,7 @@ class ChatMessage {
     );
   }
 
-  int id;
+  String id;
 
   ChatMessageType messageType;
 

@@ -37,6 +37,7 @@ class DefaultMessageText extends StatelessWidget {
         ),
         Row(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (messageOptions.showTime)
               messageOptions.messageTimeBuilder != null

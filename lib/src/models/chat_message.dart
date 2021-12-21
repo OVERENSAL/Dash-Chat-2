@@ -3,7 +3,7 @@ part of dash_chat_2;
 /// {@category Models}
 class ChatMessage {
   ChatMessage({
-    required this.id,
+    this.id,
     required this.user,
     required this.createdAt,
     this.text = '',
@@ -46,7 +46,7 @@ class ChatMessage {
     );
   }
 
-  String id;
+  String? id;
 
   ChatMessageType messageType;
 

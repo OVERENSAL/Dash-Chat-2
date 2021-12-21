@@ -25,11 +25,23 @@ class MessageOptions {
     this.parsePatterns,
     this.textBeforeMedia = true,
     this.onTapMedia,
-    this.showTime = false,
+    this.showTime = true,
+    this.showReadStatus = true,
     this.timeFormat,
     this.messageTimeBuilder,
     this.messageMediaBuilder,
+    this.readStatusIcon,
+    this.receivedStatusIcon,
+    this.pendingStatusIcon,
   });
+
+  final Widget? readStatusIcon;
+
+  final Widget? receivedStatusIcon;
+
+  final Widget? pendingStatusIcon;
+
+  final bool showReadStatus;
 
   /// Format of the time if [showTime] is true
   /// Default to: DateFormat('HH:mm')

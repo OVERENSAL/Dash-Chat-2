@@ -35,24 +35,47 @@ class DefaultMessageText extends StatelessWidget {
                 : (messageOptions.textColor ?? Colors.black),
           ),
         ),
-        if (messageOptions.showTime)
-          messageOptions.messageTimeBuilder != null
-              ? messageOptions.messageTimeBuilder!(message, isOwnMessage)
-              : Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: Text(
-                    (messageOptions.timeFormat ?? intl.DateFormat('HH:mm'))
-                        .format(message.createdAt),
-                    style: TextStyle(
-                      color: isOwnMessage
-                          ? (messageOptions.currentUserTextColor ??
-                              Colors.white70)
-                          : (messageOptions.textColor ?? Colors.black54),
-                      fontSize: 10,
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (messageOptions.showTime)
+              messageOptions.messageTimeBuilder != null
+                  ? messageOptions.messageTimeBuilder!(message, isOwnMessage)
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(
+                        (messageOptions.timeFormat ?? intl.DateFormat('HH:mm'))
+                            .format(message.createdAt),
+                        style: TextStyle(
+                          color: isOwnMessage
+                              ? (messageOptions.currentUserTextColor ??
+                                  Colors.white70)
+                              : (messageOptions.textColor ?? Colors.black54),
+                          fontSize: 10,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+            if (isOwnMessage && messageOptions.showReadStatus)
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: _getIconByStatus(message),
+              ),
+          ],
+        ),
       ],
     );
+  }
+
+  Widget? _getIconByStatus(ChatMessage message) {
+    switch (message.status) {
+      case (MessageStatus.read):
+        return messageOptions.readStatusIcon;
+      case (MessageStatus.received):
+        return messageOptions.receivedStatusIcon;
+      case (MessageStatus.pending):
+        return messageOptions.pendingStatusIcon;
+      default:
+        return Container();
+    }
   }
 }

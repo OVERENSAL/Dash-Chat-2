@@ -35,27 +35,29 @@ class DefaultMessageText extends StatelessWidget {
                 : (messageOptions.textColor ?? Colors.black),
           ),
         ),
-        const SizedBox(height: 5),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (messageOptions.showTime)
               messageOptions.messageTimeBuilder != null
                   ? messageOptions.messageTimeBuilder!(message, isOwnMessage)
-                  : Text(
-                (messageOptions.timeFormat ?? intl.DateFormat('HH:mm'))
-                    .format(message.createdAt),
-                style: TextStyle(
-                  color: isOwnMessage
-                      ? (messageOptions.currentUserTextColor ??
-                      Colors.white70)
-                      : (messageOptions.textColor ?? Colors.black54),
-                  fontSize: 10,
+                  : Padding(
+                padding: EdgeInsets.only(top: 2),
+                child: Text(
+                  (messageOptions.timeFormat ?? intl.DateFormat('HH:mm'))
+                      .format(message.createdAt),
+                  style: TextStyle(
+                    color: isOwnMessage
+                        ? (messageOptions.currentUserTextColor ??
+                        Colors.white70)
+                        : (messageOptions.textColor ?? Colors.black54),
+                    fontSize: 10,
+                  ),
                 ),
               ),
             if (isOwnMessage && messageOptions.showReadStatus)
               Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 6),
                 child: _getIconByStatus(message),
               ),
           ],

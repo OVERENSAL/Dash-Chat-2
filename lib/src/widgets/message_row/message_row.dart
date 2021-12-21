@@ -55,7 +55,7 @@ class MessageRow extends StatelessWidget {
     }
     return Padding(
       padding: EdgeInsets.only(top: isPreviousSameAuthor ? 2 : 15),
-      child: (message.messageType == MessageType.common)
+      child: (message.messageType == ChatMessageType.common)
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: isOwnMessage
@@ -150,13 +150,13 @@ class MessageRow extends StatelessWidget {
               alignment: AlignmentDirectional.center,
               margin: EdgeInsets.only(
                   top: 10,
-                  bottom: (message.messageType == MessageType.system) ? 0 : 20),
+                  bottom: (message.messageType == ChatMessageType.system) ? 0 : 20),
               child: Text(
                 message.text,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize:
-                        (message.messageType == MessageType.system) ? 16 : 10,
+                        (message.messageType == ChatMessageType.system) ? 16 : 10,
                     color: Colors.grey,
                     height: 1.4),
               ),

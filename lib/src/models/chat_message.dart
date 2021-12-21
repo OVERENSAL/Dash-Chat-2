@@ -3,6 +3,7 @@ part of dash_chat_2;
 /// {@category Models}
 class ChatMessage {
   ChatMessage({
+    required this.id,
     required this.user,
     required this.createdAt,
     this.text = '',
@@ -12,12 +13,13 @@ class ChatMessage {
     this.mentions,
     this.status = MessageStatus.none,
     this.replyTo,
-    this.messageType = MessageType.common,
+    this.messageType = ChatMessageType.common,
   });
 
   /// Create a ChatMessage instance from json data
   factory ChatMessage.fromJson(Map<String, dynamic> jsonData) {
     return ChatMessage(
+      id: jsonData['id'],
       user: ChatUser.fromJson(jsonData['user']),
       createdAt: DateTime.parse(jsonData['createdAt'].toString()).toLocal(),
       text: jsonData['text'],
@@ -44,7 +46,9 @@ class ChatMessage {
     );
   }
 
-  MessageType messageType;
+  int id;
+
+  ChatMessageType messageType;
 
   /// Text of the message (optional because you can also just send a media)
   String text;
@@ -121,7 +125,7 @@ class MessageStatus {
   static const pending = MessageStatus._internal('pending');
 }
 
-enum MessageType {
+enum ChatMessageType {
   system,
   info,
   common,

@@ -35,14 +35,16 @@ class DefaultMessageText extends StatelessWidget {
                 : (messageOptions.textColor ?? Colors.black),
           ),
         ),
-        Row(
+        const SizedBox(height: 3),
+        if (message.medias == null || message.medias!.isEmpty)
+          Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (messageOptions.showTime)
               messageOptions.messageTimeBuilder != null
                   ? messageOptions.messageTimeBuilder!(message, isOwnMessage)
                   : Padding(
-                      padding: EdgeInsets.only(top: 2),
+                      padding: const EdgeInsets.only(top: 2),
                       child: Text(
                         (messageOptions.timeFormat ?? intl.DateFormat('HH:mm'))
                             .format(message.createdAt),

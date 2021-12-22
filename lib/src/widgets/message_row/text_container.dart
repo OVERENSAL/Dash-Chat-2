@@ -42,28 +42,13 @@ class TextContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: messageOptions.messageDecorationBuilder != null
-          ? messageOptions.messageDecorationBuilder!(
-              message, previousMessage, nextMessage)
-          : defaultMessageDecoration(
-              color: isOwnMessage
-                  ? (messageOptions.currentUserContainerColor ??
-                      Theme.of(context).primaryColor)
-                  : (messageOptions.containerColor ?? Colors.grey[100])!,
-              borderTopLeft: isPreviousSameAuthor && !isOwnMessage ? 0.0 : 18.0,
-              borderTopRight: isPreviousSameAuthor && isOwnMessage ? 0.0 : 18.0,
-              borderBottomLeft: isNextSameAuthor && !isOwnMessage ? 0.0 : 18.0,
-              borderBottomRight: isNextSameAuthor && isOwnMessage ? 0.0 : 18.0,
-            ),
-      padding: messageOptions.messagePadding ?? const EdgeInsets.all(11),
-      child: messageTextBuilder != null
+    return  (messageTextBuilder != null)
           ? messageTextBuilder!(message, previousMessage, nextMessage)
           : DefaultMessageText(
               message: message,
               isOwnMessage: isOwnMessage,
               messageOptions: messageOptions,
-            ),
+
     );
   }
 }

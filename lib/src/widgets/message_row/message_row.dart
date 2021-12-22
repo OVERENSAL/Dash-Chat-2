@@ -95,40 +95,65 @@ class MessageRow extends StatelessWidget {
                           messageOptions.userNameBuilder != null
                               ? messageOptions.userNameBuilder!(message.user)
                               : DefaultUserName(user: message.user),
-                        if (message.medias != null &&
-                            message.medias!.isNotEmpty &&
-                            messageOptions.textBeforeMedia)
-                          messageOptions.messageMediaBuilder != null
-                              ? messageOptions.messageMediaBuilder!(
-                                  message, previousMessage, nextMessage)
-                              : MediaContainer(
-                                  message: message,
-                                  isOwnMessage: isOwnMessage,
+                        Container(
+                          decoration:
+                              messageOptions.messageDecorationBuilder != null
+                                  ? messageOptions.messageDecorationBuilder!(
+                                      message, previousMessage, nextMessage)
+                                  : defaultMessageDecoration(
+                                      color: isOwnMessage
+                                          ? (messageOptions
+                                                  .currentUserContainerColor ??
+                                              Theme.of(context).primaryColor)
+                                          : (messageOptions.containerColor ??
+                                              Colors.grey[100])!,
+                                      borderTopLeft: 18.0,
+                                      borderTopRight: 18.0,
+                                      borderBottomLeft: 18.0,
+                                      borderBottomRight: 18.0,
+                                    ),
+                          padding: messageOptions.messagePadding ??
+                              const EdgeInsets.all(11),
+                          child: Column(
+                            crossAxisAlignment: isOwnMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                            children: [
+                              if (message.medias != null &&
+                                  message.medias!.isNotEmpty &&
+                                  messageOptions.textBeforeMedia)
+                                messageOptions.messageMediaBuilder != null
+                                    ? messageOptions.messageMediaBuilder!(
+                                        message, previousMessage, nextMessage)
+                                    : MediaContainer(
+                                        message: message,
+                                        isOwnMessage: isOwnMessage,
+                                        messageOptions: messageOptions,
+                                      ),
+                              if (message.text.isNotEmpty)
+                                TextContainer(
                                   messageOptions: messageOptions,
+                                  message: message,
+                                  previousMessage: previousMessage,
+                                  nextMessage: nextMessage,
+                                  isOwnMessage: isOwnMessage,
+                                  isNextSameAuthor: isNextSameAuthor,
+                                  isPreviousSameAuthor: isPreviousSameAuthor,
+                                  messageTextBuilder:
+                                      messageOptions.messageTextBuilder,
                                 ),
-                        if (message.text.isNotEmpty)
-                          TextContainer(
-                            messageOptions: messageOptions,
-                            message: message,
-                            previousMessage: previousMessage,
-                            nextMessage: nextMessage,
-                            isOwnMessage: isOwnMessage,
-                            isNextSameAuthor: isNextSameAuthor,
-                            isPreviousSameAuthor: isPreviousSameAuthor,
-                            messageTextBuilder:
-                                messageOptions.messageTextBuilder,
+                              if (message.medias != null &&
+                                  message.medias!.isNotEmpty &&
+                                  !messageOptions.textBeforeMedia)
+                                messageOptions.messageMediaBuilder != null
+                                    ? messageOptions.messageMediaBuilder!(
+                                        message, previousMessage, nextMessage)
+                                    : MediaContainer(
+                                        message: message,
+                                        isOwnMessage: isOwnMessage,
+                                        messageOptions: messageOptions,
+                                      ),
+                            ],
                           ),
-                        if (message.medias != null &&
-                            message.medias!.isNotEmpty &&
-                            !messageOptions.textBeforeMedia)
-                          messageOptions.messageMediaBuilder != null
-                              ? messageOptions.messageMediaBuilder!(
-                                  message, previousMessage, nextMessage)
-                              : MediaContainer(
-                                  message: message,
-                                  isOwnMessage: isOwnMessage,
-                                  messageOptions: messageOptions,
-                                ),
+                        ),
                         if (messageOptions.bottom != null)
                           messageOptions.bottom!(
                               message, previousMessage, nextMessage),
@@ -150,13 +175,15 @@ class MessageRow extends StatelessWidget {
               alignment: AlignmentDirectional.center,
               margin: EdgeInsets.only(
                   top: 10,
-                  bottom: (message.messageType == ChatMessageType.system) ? 0 : 20),
+                  bottom:
+                      (message.messageType == ChatMessageType.system) ? 0 : 20),
               child: Text(
                 message.text,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize:
-                        (message.messageType == ChatMessageType.system) ? 16 : 10,
+                    fontSize: (message.messageType == ChatMessageType.system)
+                        ? 16
+                        : 10,
                     color: Colors.grey,
                     height: 1.4),
               ),

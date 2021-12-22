@@ -3,10 +3,14 @@ part of dash_chat_2;
 /// @nodoc
 class MediaContainer extends StatelessWidget {
   const MediaContainer({
+    Key? key,
     required this.message,
     required this.isOwnMessage,
     this.messageOptions = const MessageOptions(),
-    Key? key,
+    this.previousMessage,
+    this.nextMessage,
+    this.isPreviousSameAuthor = false,
+    this.isNextSameAuthor = false,
   }) : super(key: key);
 
   /// Message that contains the media to show
@@ -17,6 +21,18 @@ class MediaContainer extends StatelessWidget {
 
   /// Options to customize the behaviour and design of the messages
   final MessageOptions messageOptions;
+
+  /// Previous message in the list
+  final ChatMessage? previousMessage;
+
+  /// Next message in the list
+  final ChatMessage? nextMessage;
+
+  /// If the previous message is from the same author as the current one
+  final bool isPreviousSameAuthor;
+
+  /// If the next message is from the same author as the current one
+  final bool isNextSameAuthor;
 
   /// Get the right media widget according to its type
   Widget _getMedia(ChatMedia media, double? height, double? width) {
@@ -104,46 +120,93 @@ class MediaContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     if (message.medias != null && message.medias!.isNotEmpty) {
       final List<ChatMedia> media = message.medias!;
-      return Wrap(
-        alignment: isOwnMessage ? WrapAlignment.end : WrapAlignment.start,
-        children: media.map(
-          (ChatMedia m) {
-            final double gallerySize =
-                (MediaQuery.of(context).size.width);
-            final bool isImage = m.type == MediaType.image;
-            return Container(
-              color: Colors.transparent,
-              margin: const EdgeInsets.only(top: 5, right: 5),
-              width: media.length > 1 && isImage ? gallerySize : null,
-              height: media.length > 1 && isImage ? gallerySize : null,
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.5,
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
-              ),
-              child: GestureDetector(
-                onTap: messageOptions.onTapMedia != null
-                    ? () => messageOptions.onTapMedia!(m)
-                    : null,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: ColorFiltered(
-                    colorFilter: ColorFilter.mode(
-                      m.isUploading ? Colors.white54 : Colors.transparent,
-                      BlendMode.srcATop,
-                    ),
-                    child: _getMedia(
-                      m,
-                      media.length > 1 ? gallerySize : null,
-                      media.length > 1 ? gallerySize : null,
+      return Column(
+        crossAxisAlignment:
+            (isOwnMessage) ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            alignment: isOwnMessage ? WrapAlignment.end : WrapAlignment.start,
+            children: media.map(
+              (ChatMedia m) {
+                final double gallerySize = (MediaQuery.of(context).size.width);
+                final bool isImage = m.type == MediaType.image;
+                return Container(
+                  color: Colors.transparent,
+                  margin: const EdgeInsets.only(top: 5, right: 5),
+                  width: media.length > 1 && isImage ? gallerySize : null,
+                  height: media.length > 1 && isImage ? gallerySize : null,
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.5,
+                    maxWidth: MediaQuery.of(context).size.width * 0.7,
+                  ),
+                  child: GestureDetector(
+                    onTap: messageOptions.onTapMedia != null
+                        ? () => messageOptions.onTapMedia!(m)
+                        : null,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          m.isUploading ? Colors.white54 : Colors.transparent,
+                          BlendMode.srcATop,
+                        ),
+                        child: _getMedia(
+                          m,
+                          media.length > 1 ? gallerySize : null,
+                          media.length > 1 ? gallerySize : null,
+                        ),
+                      ),
                     ),
                   ),
+                );
+              },
+            ).toList(),
+          ),
+          const SizedBox(height: 3),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (messageOptions.showTime)
+                messageOptions.messageTimeBuilder != null
+                    ? messageOptions.messageTimeBuilder!(message, isOwnMessage)
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Text(
+                          (messageOptions.timeFormat ??
+                                  intl.DateFormat('HH:mm'))
+                              .format(message.createdAt),
+                          style: TextStyle(
+                            color: isOwnMessage
+                                ? (messageOptions.currentUserTextColor ??
+                                    Colors.white70)
+                                : (messageOptions.textColor ?? Colors.black54),
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+              if (isOwnMessage && messageOptions.showReadStatus)
+                Padding(
+                  padding: const EdgeInsets.only(left: 6),
+                  child: _getIconByStatus(message),
                 ),
-              ),
-            );
-          },
-        ).toList(),
+            ],
+          ),
+        ],
       );
     }
     return Container();
+  }
+
+  Widget? _getIconByStatus(ChatMessage message) {
+    switch (message.status) {
+      case (MessageStatus.read):
+        return messageOptions.readStatusIcon;
+      case (MessageStatus.received):
+        return messageOptions.receivedStatusIcon;
+      case (MessageStatus.pending):
+        return messageOptions.pendingStatusIcon;
+      default:
+        return Container();
+    }
   }
 }

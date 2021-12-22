@@ -35,7 +35,7 @@ class MediaContainer extends StatelessWidget {
   final bool isNextSameAuthor;
 
   /// Get the right media widget according to its type
-  Widget _getMedia(ChatMedia media, double? height, double? width) {
+  Widget _getMedia(ChatMedia media) {
     final Widget loading = Container(
       width: 15,
       height: 15,
@@ -56,8 +56,6 @@ class MediaContainer extends StatelessWidget {
           alignment: AlignmentDirectional.bottomEnd,
           children: <Widget>[
             Image(
-              height: height,
-              width: width,
               fit: BoxFit.fill,
               alignment: isOwnMessage ? Alignment.topRight : Alignment.topLeft,
               image: _getImage(media.url),
@@ -128,17 +126,9 @@ class MediaContainer extends StatelessWidget {
             alignment: isOwnMessage ? WrapAlignment.end : WrapAlignment.start,
             children: media.map(
               (ChatMedia m) {
-                final double gallerySize = (MediaQuery.of(context).size.width);
-                final bool isImage = m.type == MediaType.image;
                 return Container(
                   color: Colors.transparent,
                   margin: const EdgeInsets.only(top: 5, right: 5),
-                  width: media.length > 1 && isImage ? gallerySize : null,
-                  height: media.length > 1 && isImage ? gallerySize : null,
-                  constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.5,
-                    maxWidth: MediaQuery.of(context).size.width * 0.7,
-                  ),
                   child: GestureDetector(
                     onTap: messageOptions.onTapMedia != null
                         ? () => messageOptions.onTapMedia!(m)
@@ -151,9 +141,7 @@ class MediaContainer extends StatelessWidget {
                           BlendMode.srcATop,
                         ),
                         child: _getMedia(
-                          m,
-                          media.length > 1 ? gallerySize : null,
-                          media.length > 1 ? gallerySize : null,
+                          m
                         ),
                       ),
                     ),

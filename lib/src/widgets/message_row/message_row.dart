@@ -119,7 +119,7 @@ class MessageRow extends StatelessWidget {
                             children: [
                               if (message.medias != null &&
                                   message.medias!.isNotEmpty &&
-                                  messageOptions.textBeforeMedia)
+                                  !messageOptions.textBeforeMedia)
                                 messageOptions.messageMediaBuilder != null
                                     ? messageOptions.messageMediaBuilder!(
                                         message, previousMessage, nextMessage)
@@ -142,7 +142,7 @@ class MessageRow extends StatelessWidget {
                                 ),
                               if (message.medias != null &&
                                   message.medias!.isNotEmpty &&
-                                  !messageOptions.textBeforeMedia)
+                                  messageOptions.textBeforeMedia)
                                 messageOptions.messageMediaBuilder != null
                                     ? messageOptions.messageMediaBuilder!(
                                         message, previousMessage, nextMessage)

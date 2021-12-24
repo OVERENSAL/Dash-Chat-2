@@ -36,7 +36,7 @@ class DefaultMessageText extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 3),
-        if (messageOptions.textBeforeMedia || message.medias == null || message.medias!.isEmpty)
+        if (!messageOptions.textBeforeMedia || message.medias == null || message.medias!.isEmpty)
           Row(
           mainAxisSize: MainAxisSize.min,
           children: [

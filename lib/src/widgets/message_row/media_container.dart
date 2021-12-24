@@ -148,7 +148,7 @@ class MediaContainer extends StatelessWidget {
               },
             ).toList(),
           ),
-          if (message.text.isEmpty || !messageOptions.textBeforeMedia)
+          if (message.text.isEmpty || messageOptions.textBeforeMedia)
             Column(
               children: [
                 const SizedBox(height: 3),

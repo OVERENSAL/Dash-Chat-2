@@ -21,6 +21,7 @@ class InputOptions {
     this.inputTextStyle,
     this.inputToolbarStyle,
     this.inputMaxLines = 5,
+    this.inputMinLines = 1,
     this.showTraillingBeforeSend = false,
     this.inputToolbarPadding = const EdgeInsets.all(8.0),
     this.inputToolbarMargin = const EdgeInsets.only(top: 8.0),
@@ -80,6 +81,8 @@ class InputOptions {
 
   /// To customize the overall container of the input
   final BoxDecoration? inputToolbarStyle;
+
+  final int inputMinLines;
 
   /// Max number of visible lines of the input, it will grow until this value and then scroll
   final int inputMaxLines;

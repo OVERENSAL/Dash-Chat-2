@@ -54,7 +54,6 @@ class _InputToolbarState extends State<InputToolbar> {
               child: Directionality(
                 textDirection: widget.inputOptions.inputTextDirection,
                 child: TextField(
-                  textAlignVertical: TextAlignVertical.bottom,
                   focusNode: widget.inputOptions.focusNode,
                   controller: textController,
                   enabled: !widget.inputOptions.inputDisabled,

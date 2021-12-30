@@ -54,7 +54,9 @@ class MessageRow extends StatelessWidget {
       isNextSameAuthor = true;
     }
     return Padding(
-      padding: EdgeInsets.only(top: isPreviousSameAuthor ? 2 : 15),
+      padding: EdgeInsets.only(top: isPreviousSameAuthor ||
+                  message.messageType != ChatMessageType.common
+              ? 7 : 15),
       child: (message.messageType == ChatMessageType.common)
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -115,7 +117,9 @@ class MessageRow extends StatelessWidget {
                           padding: messageOptions.messagePadding ??
                               const EdgeInsets.all(11),
                           child: Column(
-                            crossAxisAlignment: isOwnMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                            crossAxisAlignment: isOwnMessage
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
                             children: [
                               if (message.medias != null &&
                                   message.medias!.isNotEmpty &&
@@ -173,10 +177,7 @@ class MessageRow extends StatelessWidget {
           : Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               alignment: AlignmentDirectional.center,
-              margin: EdgeInsets.only(
-                  top: 10,
-                  bottom:
-                      (message.messageType == ChatMessageType.system) ? 0 : 20),
+              margin: const EdgeInsets.only(bottom: 20),
               child: Text(
                 message.text,
                 textAlign: TextAlign.center,

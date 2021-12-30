@@ -46,7 +46,7 @@ class _InputToolbarState extends State<InputToolbar> {
         decoration: widget.inputOptions.inputToolbarStyle,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             if (widget.inputOptions.leading != null)
               ...widget.inputOptions.leading!,

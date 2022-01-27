@@ -110,7 +110,6 @@ class _InputToolbarState extends State<InputToolbar> {
         createdAt: DateTime.now(),
       );
       widget.onSend(message);
-      textController.text = '';
       if (widget.inputOptions.onTextChange != null) {
         widget.inputOptions.onTextChange!('');
       }

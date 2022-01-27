@@ -103,7 +103,7 @@ class _InputToolbarState extends State<InputToolbar> {
   }
 
   void _sendMessage() {
-    if (textController.text.isNotEmpty || !widget.canSend) {
+    if (textController.text.trim().isNotEmpty || widget.canSend) {
       final ChatMessage message = ChatMessage(
         text: textController.text,
         user: widget.currentUser,

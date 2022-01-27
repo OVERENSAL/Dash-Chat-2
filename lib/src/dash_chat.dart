@@ -73,6 +73,7 @@ class DashChat extends StatelessWidget {
             inputOptions: inputOptions,
             currentUser: currentUser,
             onSend: onSend,
+            canSend: canSend,
           ),
       ],
     );

@@ -114,6 +114,7 @@ class _MessageListState extends State<MessageList> {
                                 previousMessage: previousMessage,
                                 currentUser: widget.currentUser,
                                 messageOptions: widget.messageOptions,
+                                lastMessageBottomPadding: widget.messageListOptions.lastMessageBottomPadding,
                               ),
                           ],
                         );

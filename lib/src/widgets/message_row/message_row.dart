@@ -8,6 +8,7 @@ class MessageRow extends StatelessWidget {
     this.previousMessage,
     this.nextMessage,
     this.messageOptions = const MessageOptions(),
+    this.lastMessageBottomPadding = 5,
     Key? key,
   }) : super(key: key);
 
@@ -25,6 +26,8 @@ class MessageRow extends StatelessWidget {
 
   /// Options to customize the behaviour and design of the messages
   final MessageOptions messageOptions;
+
+  final double lastMessageBottomPadding;
 
   /// Get the avatar widget
   Widget getAvatar() {
@@ -56,7 +59,7 @@ class MessageRow extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: isPreviousSameAuthor ||
                   message.messageType != ChatMessageType.common
-              ? 7 : 15),
+              ? 7 : 15, bottom: nextMessage != null ? 0 : 5),
       child: (message.messageType == ChatMessageType.common)
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.end,

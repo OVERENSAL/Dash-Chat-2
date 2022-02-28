@@ -13,6 +13,7 @@ class MessageListOptions {
     this.loadEarlierBuilder,
     this.onLoadEarlier,
     this.typingBuilder,
+    this.lastMessageBottomPadding = 5,
   });
 
   /// If you want to who a date separator between messages of different dates
@@ -48,6 +49,8 @@ class MessageListOptions {
 
   /// Builder to create your own typing widget
   final Widget Function(ChatUser user)? typingBuilder;
+
+  final double lastMessageBottomPadding;
 }
 
 enum SeparatorFrequency { days, hours }
